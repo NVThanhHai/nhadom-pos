@@ -9,4 +9,9 @@ export default defineConfig({
             'resources/js/chart-config.js',
         ]),
     ],
+    // server: {
+    //     hmr: {
+    //         host: 'localhost',
+    //     },
+    // },
 });

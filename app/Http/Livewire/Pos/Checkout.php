@@ -50,11 +50,14 @@ class Checkout extends Component
     }
 
     public function proceed() {
-        if ($this->customer_id != null) {
+        $this->dispatchBrowserEvent('showCheckoutModal');
+        // Việc điền tiên khách  hàng là không cần thiết
+        /*if ($this->customer_id != null) {
             $this->dispatchBrowserEvent('showCheckoutModal');
-        } else {
-            session()->flash('message', 'Please Select Customer!');
         }
+           else {
+            session()->flash('message', 'Please Select Customer!');
+        }*/
     }
 
     public function calculateTotal() {

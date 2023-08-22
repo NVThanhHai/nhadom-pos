@@ -14,7 +14,7 @@
                 @endif
 
                 <div class="form-group">
-                    <label for="customer_id">Customer <span class="text-danger">*</span></label>
+                    <label for="customer_id">Customer</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <a href="{{ route('customers.create') }}" class="btn btn-primary">
@@ -35,7 +35,7 @@
                         <thead>
                         <tr class="text-center">
                             <th class="align-middle">Product</th>
-                            <th class="align-middle">Price</th>
+                            <th class="align-midqqqqqqqqqqqqqqdle">Price</th>
                             <th class="align-middle">Quantity</th>
                             <th class="align-middle">Action</th>
                         </tr>
@@ -81,44 +81,34 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <tr>
-                                <th>Order Tax ({{ $global_tax }}%)</th>
-                                <td>(+) {{ format_currency(Cart::instance($cart_instance)->tax()) }}</td>
-                            </tr>
-                            <tr>
-                                <th>Discount ({{ $global_discount }}%)</th>
-                                <td>(-) {{ format_currency(Cart::instance($cart_instance)->discount()) }}</td>
-                            </tr>
-                            <tr>
-                                <th>Shipping</th>
-                                <input type="hidden" value="{{ $shipping }}" name="shipping_amount">
-                                <td>(+) {{ format_currency($shipping) }}</td>
-                            </tr>
-                            <tr class="text-primary">
-                                <th>Grand Total</th>
-                                @php
-                                    $total_with_shipping = Cart::instance($cart_instance)->total() + (float) $shipping
-                                @endphp
-                                <th>
-                                    (=) {{ format_currency($total_with_shipping) }}
-                                </th>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
+{{--            <div class="row">--}}
+{{--                <div class="col-md-12">--}}
+{{--                    <div class="table-responsive">--}}
+{{--                        <table class="table table-borderless">--}}
+{{--                            <tr>--}}
+{{--                                <th>Discount ({{ $global_discount }}%)</th>--}}
+{{--                                <td>{{ format_currency(Cart::instance($cart_instance)->discount()) }}</td>--}}
+{{--                            </tr>--}}
+{{--                            <tr>--}}
+{{--                                <th>Shipping</th>--}}
+{{--                                <input type="hidden" value="{{ $shipping }}" name="shipping_amount">--}}
+{{--                                <td>{{ format_currency($shipping) }}</td>--}}
+{{--                            </tr>--}}
+{{--                            <tr class="text-primary">--}}
+{{--                                <th>Total</th>--}}
+{{--                                @php--}}
+{{--                                    $total_with_shipping = Cart::instance($cart_instance)->total() + (float) $shipping--}}
+{{--                                @endphp--}}
+{{--                                <th>--}}
+{{--                                    {{ format_currency($total_with_shipping) }}--}}
+{{--                                </th>--}}
+{{--                            </tr>--}}
+{{--                        </table>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
             <div class="form-row">
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <label for="tax_percentage">Order Tax (%)</label>
-                        <input wire:model.lazy="global_tax" type="number" class="form-control" min="0" max="100" value="{{ $global_tax }}" required>
-                    </div>
-                </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label for="discount_percentage">Discount (%)</label>

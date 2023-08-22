@@ -1,6 +1,6 @@
 // CoreUI
 @import '@coreui/coreui/scss/coreui';
-
+@import "bootstrap";
 //Extra Overrides
 //.c-sidebar {
 //    background: #0f766e;
@@ -58,4 +58,13 @@ table {
     table {
         width: 100% !important;
     }
+}
+
+input {
+    outline: 0;
+    border-width: 0 0 1px!important;
+    border-color: #d8dbe0;
+}
+input:focus {
+    outline: 1px dotted #000
 }

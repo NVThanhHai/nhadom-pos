@@ -10,7 +10,12 @@
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('images/favicon.png') }}">
     <!-- CoreUI CSS -->
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}" crossorigin="anonymous">
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @livewireStyles
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 </head>
@@ -90,9 +95,6 @@
         </div>
     </div>
 </div>
-
-<!-- CoreUI -->
-<script src="{{ mix('js/app.js') }}" defer></script>
 
 </body>
 </html>
