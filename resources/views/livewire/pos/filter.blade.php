@@ -2,14 +2,13 @@
     <div class="form-row">
         <div class="col-md-7">
             <ul class="nav nav-tabs">
-                <li class="nav-item">
+                <li class="nav-item" wire:model="category">
                     @foreach($categories as $category)
-                        <a id = "{{ $category->id }}" class="nav-link active" href="#">{{ $category->category_name }}</a>
-                  {{--      <option value="{{ $category->id }}">{{ $category->category_name }}</option>--}}
+                        <a id = "{{ $category->id }}" wire:click='updatedCategory()' class="nav-link active" href="#">{{ $category->category_name }}</a>
                     @endforeach
                 </li>
             </ul>
-            {{--<div class="form-group">
+            <div class="form-group">
                 <label>Product Category</label>
                 <select wire:model="category" class="form-control">
                     <option value="">All Products</option>
@@ -17,7 +16,7 @@
                         <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                     @endforeach
                 </select>
-            </div>--}}
+            </div>
         </div>
 {{--        <div class="col-md-5">--}}
 {{--            <div class="form-group">--}}
