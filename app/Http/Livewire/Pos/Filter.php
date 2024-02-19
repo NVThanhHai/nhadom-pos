@@ -25,4 +25,9 @@ class Filter extends Component
     public function updatedShowCount() {
         $this->emitUp('showCount', $this->category);
     }
+
+    public function selectCategory($categoryId)
+    {
+        $this->emitUp('selectedCategory', $categoryId);
+    }
 }

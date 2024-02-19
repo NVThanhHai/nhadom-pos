@@ -43,8 +43,8 @@ class PosController extends Controller
             $sale = Sale::create([
                 'date' => now()->format('Y-m-d'),
                 'reference' => 'PSL',
-                'customer_id' => $request->customer_id,
-                'customer_name' => Customer::findOrFail($request->customer_id)->customer_name,
+                'customer_id' => 1,
+                'customer_name' => Customer::findOrFail(1)->customer_name,
                 'tax_percentage' => $request->tax_percentage,
                 'discount_percentage' => $request->discount_percentage,
                 'shipping_amount' => $request->shipping_amount * 100,
@@ -64,14 +64,14 @@ class PosController extends Controller
                     'sale_id' => $sale->id,
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
-                    'product_code' => $cart_item->options->code,
+                    'product_code' => '',
                     'quantity' => $cart_item->qty,
                     'price' => $cart_item->price * 100,
-                    'unit_price' => $cart_item->options->unit_price * 100,
+                    'unit_price' => 0,
                     'sub_total' => $cart_item->options->sub_total * 100,
                     'product_discount_amount' => $cart_item->options->product_discount * 100,
                     'product_discount_type' => $cart_item->options->product_discount_type,
-                    'product_tax_amount' => $cart_item->options->product_tax * 100,
+                    'product_tax_amount' => $cart_item->options->product_tax != null ? $cart_item->options->product_tax : 0 * 100,
                 ]);
 
                 $product = Product::findOrFail($cart_item->id);
@@ -95,6 +95,6 @@ class PosController extends Controller
 
         toast('POS Sale Created!', 'success');
 
-        return redirect()->route('sales.index');
+        return redirect()->route('app.pos.index');
     }
 }

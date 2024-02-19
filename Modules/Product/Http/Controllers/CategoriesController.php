@@ -11,6 +11,7 @@ use Modules\Product\DataTables\ProductCategoriesDataTable;
 
 class CategoriesController extends Controller
 {
+    public $category;
 
     public function index(ProductCategoriesDataTable $dataTable) {
         abort_if(Gate::denies('access_product_categories'), 403);
@@ -81,4 +82,6 @@ class CategoriesController extends Controller
 
         return redirect()->route('product-categories.index');
     }
+
+
 }

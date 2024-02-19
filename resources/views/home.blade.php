@@ -19,8 +19,8 @@
                             <i class="bi bi-bar-chart font-2xl"></i>
                         </div>
                         <div>
-                            <div class="text-value text-primary">{{ format_currency($revenue) }}</div>
-                            <div class="text-muted text-uppercase font-weight-bold small">Revenue</div>
+                            <div class="text-value text-primary">{{ format_currency($revenue_today) }}</div>
+                            <div class="text-muted text-uppercase font-weight-bold small">Doanh thu hôm nay</div>
                         </div>
                     </div>
                 </div>
@@ -33,26 +33,26 @@
                             <i class="bi bi-arrow-return-left font-2xl"></i>
                         </div>
                         <div>
-                            <div class="text-value text-warning">{{ format_currency($sale_returns) }}</div>
-                            <div class="text-muted text-uppercase font-weight-bold small">Sales Return</div>
+                            <div class="text-value text-warning">{{ format_currency($revenue) }}</div>
+                            <div class="text-muted text-uppercase font-weight-bold small">Tổng doanh thu</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-6 col-lg-3">
-                <div class="card border-0">
-                    <div class="card-body p-0 d-flex align-items-center shadow-sm">
-                        <div class="bg-gradient-success p-4 mfe-3 rounded-left">
-                            <i class="bi bi-arrow-return-right font-2xl"></i>
-                        </div>
-                        <div>
-                            <div class="text-value text-success">{{ format_currency($purchase_returns) }}</div>
-                            <div class="text-muted text-uppercase font-weight-bold small">Purchases Return</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{{--            <div class="col-md-6 col-lg-3">--}}
+{{--                <div class="card border-0">--}}
+{{--                    <div class="card-body p-0 d-flex align-items-center shadow-sm">--}}
+{{--                        <div class="bg-gradient-success p-4 mfe-3 rounded-left">--}}
+{{--                            <i class="bi bi-arrow-return-right font-2xl"></i>--}}
+{{--                        </div>--}}
+{{--                        <div>--}}
+{{--                            <div class="text-value text-success">{{ format_currency($purchase_returns) }}</div>--}}
+{{--                            <div class="text-muted text-uppercase font-weight-bold small">Purchases Return</div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
             <div class="col-md-6 col-lg-3">
                 <div class="card border-0">
@@ -62,7 +62,7 @@
                         </div>
                         <div>
                             <div class="text-value text-info">{{ format_currency($profit) }}</div>
-                            <div class="text-muted text-uppercase font-weight-bold small">Profit</div>
+                            <div class="text-muted text-uppercase font-weight-bold small">Lợi nhuận</div>
                         </div>
                     </div>
                 </div>
@@ -101,20 +101,20 @@
         </div>
         @endcan
 
-        @can('show_monthly_cashflow')
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-header">
-                        Monthly Cash Flow (Payment Sent & Received)
-                    </div>
-                    <div class="card-body">
-                        <canvas id="paymentChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endcan
+{{--        @can('show_monthly_cashflow')--}}
+{{--        <div class="row">--}}
+{{--            <div class="col-lg-12">--}}
+{{--                <div class="card border-0 shadow-sm">--}}
+{{--                    <div class="card-header">--}}
+{{--                        Monthly Cash Flow (Payment Sent & Received)--}}
+{{--                    </div>--}}
+{{--                    <div class="card-body">--}}
+{{--                        <canvas id="paymentChart"></canvas>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--        @endcan--}}
     </div>
 @endsection
 

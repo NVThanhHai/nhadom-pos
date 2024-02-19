@@ -34,11 +34,14 @@ class HomeController extends Controller
         $revenue = ($sales - $sale_returns) / 100;
         $profit = $revenue - $product_costs;
 
+        $revenue_today = Sale::where('status', 'Completed')->whereDate('date', date('Y-m-d'))->sum('total_amount') / 100;
+
         return view('home', [
             'revenue'          => $revenue,
             'sale_returns'     => $sale_returns / 100,
             'purchase_returns' => $purchase_returns / 100,
-            'profit'           => $profit
+            'profit'           => $profit,
+            'revenue_today'    => $revenue_today
         ]);
     }
 

@@ -48,7 +48,7 @@ class SaleController extends Controller
 
             $sale = Sale::create([
                 'date' => $request->date,
-                'customer_id' => $request->customer_id,
+                //'customer_id' => $request->customer_id,
                 'customer_name' => Customer::findOrFail($request->customer_id)->customer_name,
                 'tax_percentage' => $request->tax_percentage,
                 'discount_percentage' => $request->discount_percentage,
@@ -173,8 +173,8 @@ class SaleController extends Controller
             $sale->update([
                 'date' => $request->date,
                 'reference' => $request->reference,
-                'customer_id' => $request->customer_id,
-                'customer_name' => Customer::findOrFail($request->customer_id)->customer_name,
+                //'customer_id' => $request->customer_id,
+                //'customer_name' => Customer::findOrFail($request->customer_id)->customer_name,
                 'tax_percentage' => $request->tax_percentage,
                 'discount_percentage' => $request->discount_percentage,
                 'shipping_amount' => $request->shipping_amount * 100,

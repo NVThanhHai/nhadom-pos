@@ -25,7 +25,7 @@ class Checkout extends Component
 
     public function mount($cartInstance, $customers) {
         $this->cart_instance = $cartInstance;
-        $this->customers = $customers;
+        //$this->customers = $customers;
         $this->global_discount = 0;
         $this->global_tax = 0;
         $this->shipping = 0.00;
@@ -75,35 +75,42 @@ class Checkout extends Component
             return $cartItem->id == $product['id'];
         });
 
-        if ($exists->isNotEmpty()) {
-            session()->flash('message', 'Product exists in the cart!');
+        if ($exists->isNotEmpty() && $exists->firstOrFail() != null) {
+            $item = $exists->firstOrFail();
+            $item->qty = $item->qty + 1;
+            $rowId = $exists->firstOrFail()->rowId;
+           $cart->update($rowId, $item->qty);
 
-            return;
+            $this->quantity[$product['id']] = $item->qty;
+            $this->discount_type[$product['id']] = 'fixed';
+            $this->item_discount[$product['id']] = 0;
+            $this->total_amount = $this->calculateTotal();
+
+        } else {
+            $cart->add([
+                'id'      => $product['id'],
+                'name'    => $product['product_name'],
+                'qty'     => 1,
+                'price'   => $this->calculate($product)['price'],
+                'weight'  => 1,
+                'options' => [
+                    'product_discount'      => 0.00,
+                    'product_discount_type' => 'fixed',
+                    'sub_total'             => $this->calculate($product)['sub_total'],
+                    'code'                  => $product['product_code'],
+                    'stock'                 => $product['product_quantity'],
+                    'unit'                  => $product['product_unit'],
+                    'product_tax'           => $this->calculate($product)['product_tax'],
+                    'unit_price'            => $this->calculate($product)['unit_price']
+                ]
+            ]);
+            $this->check_quantity[$product['id']] = $product['product_quantity'];
+            $this->quantity[$product['id']] = 1;
+            $this->discount_type[$product['id']] = 'fixed';
+            $this->item_discount[$product['id']] = 0;
+            $this->total_amount = $this->calculateTotal();
         }
 
-        $cart->add([
-            'id'      => $product['id'],
-            'name'    => $product['product_name'],
-            'qty'     => 1,
-            'price'   => $this->calculate($product)['price'],
-            'weight'  => 1,
-            'options' => [
-                'product_discount'      => 0.00,
-                'product_discount_type' => 'fixed',
-                'sub_total'             => $this->calculate($product)['sub_total'],
-                'code'                  => $product['product_code'],
-                'stock'                 => $product['product_quantity'],
-                'unit'                  => $product['product_unit'],
-                'product_tax'           => $this->calculate($product)['product_tax'],
-                'unit_price'            => $this->calculate($product)['unit_price']
-            ]
-        ]);
-
-        $this->check_quantity[$product['id']] = $product['product_quantity'];
-        $this->quantity[$product['id']] = 1;
-        $this->discount_type[$product['id']] = 'fixed';
-        $this->item_discount[$product['id']] = 0;
-        $this->total_amount = $this->calculateTotal();
     }
 
     public function removeItem($row_id) {
@@ -119,16 +126,56 @@ class Checkout extends Component
     }
 
     public function updateQuantity($row_id, $product_id) {
-        if ($this->check_quantity[$product_id] < $this->quantity[$product_id]) {
-            session()->flash('message', 'The requested quantity is not available in stock.');
-
-            return;
-        }
+//        if ($this->check_quantity[$product_id] < $this->quantity[$product_id]) {
+//            session()->flash('message', 'The requested quantity is not available in stock.');
+//
+//            return;
+//        }
 
         Cart::instance($this->cart_instance)->update($row_id, $this->quantity[$product_id]);
 
         $cart_item = Cart::instance($this->cart_instance)->get($row_id);
 
+        Cart::instance($this->cart_instance)->update($row_id, [
+            'options' => [
+                'sub_total'             => $cart_item->price * $cart_item->qty,
+                'code'                  => $cart_item->options->code,
+                'stock'                 => $cart_item->options->stock,
+                'unit'                  => $cart_item->options->unit,
+                'product_tax'           => $cart_item->options->product_tax,
+                'unit_price'            => $cart_item->options->unit_price,
+                'product_discount'      => $cart_item->options->product_discount,
+                'product_discount_type' => $cart_item->options->product_discount_type,
+            ]
+        ]);
+    }
+
+    public function increment($row_id, $product_id) {
+        $this->quantity[$product_id] = $this->quantity[$product_id] + 1;
+        Cart::instance($this->cart_instance)->update($row_id, $this->quantity[$product_id]);
+
+        $cart_item = Cart::instance($this->cart_instance)->get($row_id);
+
+        Cart::instance($this->cart_instance)->update($row_id, [
+            'options' => [
+                'sub_total'             => $cart_item->price * $cart_item->qty,
+                'code'                  => $cart_item->options->code,
+                'stock'                 => $cart_item->options->stock,
+                'unit'                  => $cart_item->options->unit,
+                'product_tax'           => $cart_item->options->product_tax,
+                'unit_price'            => $cart_item->options->unit_price,
+                'product_discount'      => $cart_item->options->product_discount,
+                'product_discount_type' => $cart_item->options->product_discount_type,
+            ]
+        ]);
+    }
+
+    public function decrement($row_id, $product_id) {
+        $this->quantity[$product_id] = max($this->quantity[$product_id] - 1, 1);
+
+        Cart::instance($this->cart_instance)->update($row_id, $this->quantity[$product_id]);
+
+        $cart_item = Cart::instance($this->cart_instance)->get($row_id);
         Cart::instance($this->cart_instance)->update($row_id, [
             'options' => [
                 'sub_total'             => $cart_item->price * $cart_item->qty,
