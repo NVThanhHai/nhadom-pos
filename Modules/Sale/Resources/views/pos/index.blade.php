@@ -18,13 +18,12 @@
     }
 </style>
 @section('content')
-    <div class="container-fluid" style="height: 70vh!important;">
+    <div class="container-fluid" style="padding: 0; height: 70vh!important;">
         <div class="row">
             <div class="col-12">
                 @include('utils.alerts')
             </div>
             <div class="col-lg-8" style="-ms-overflow-style: none;  scrollbar-width: none;">
-                <livewire:search-product/>
                 <livewire:pos.product-list :categories="$product_categories"/>
             </div>
             <div class="col-lg-4" style="height: 70vh!important; overflow: auto">
