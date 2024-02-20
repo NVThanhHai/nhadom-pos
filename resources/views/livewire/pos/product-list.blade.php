@@ -12,11 +12,11 @@
                     <div wire:click.prevent="selectProduct({{ $product }})" class="col-lg-4 col-md-4 col-xl-3" style="cursor: pointer;">
                         <div class="card border-0 shadow " style="max-height: 140px; max-width: 150px">
                             <div class="position-relative" >
-                                <img style="max-height: 80px; width: 100%" src="http://nhadom.id.vn/storage/app/public/13/1708235050.jpg" class="card-img-top" alt="Product Image">
+                                <img style="max-height: 80px; width: 100%;object-fit: cover; " src="http://nhadom.id.vn/storage/app/public/13/1708235050.jpg" class="card-img-top" alt="Product Image">
                             </div>
                             <div class="card-body">
                                 <div class="mb-2">
-                                    <h6 style="font-size: 15px;" class="card-title mb-0">{{ $product->product_name }}</h6>
+                                    <h6 style="font-size: 14px;" class="card-title mb-0">{{ $product->product_name }}</h6>
 
                                 </div>
                                 <p class="card-text font-weight-bold">{{ format_currency($product->product_price) }}</p>
