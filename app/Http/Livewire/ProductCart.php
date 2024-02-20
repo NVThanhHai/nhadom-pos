@@ -103,7 +103,9 @@ class ProductCart extends Component
     }
 
     public function removeItem($row_id) {
-        Cart::instance($this->cart_instance)->remove($row_id);
+        if ( Cart::instance($this->cart_instance)->get($row_id) != null) {
+            Cart::instance($this->cart_instance)->remove($row_id);
+        }
     }
 
     public function updatedGlobalTax() {

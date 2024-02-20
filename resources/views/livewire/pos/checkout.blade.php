@@ -1,7 +1,7 @@
 <div>
-    <div class="card border-0 shadow-sm">
+    <div class="card border-0 shadow-sm" style="height: 70vh!important;" >
         <div class="card-body">
-            <div>
+            <div class="d-flex justify-content-around" style="max-height: 60vh!important; overflow: auto">
                 @if (session()->has('message'))
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
                         <div class="alert-body">
@@ -12,25 +12,7 @@
                         </div>
                     </div>
                 @endif
-
-{{--                <div class="form-group">--}}
-{{--                    <label for="customer_id">Customer</label>--}}
-{{--                    <div class="input-group">--}}
-{{--                        <div class="input-group-prepend">--}}
-{{--                            <a href="{{ route('customers.create') }}" class="btn btn-primary">--}}
-{{--                                <i class="bi bi-person-plus"></i>--}}
-{{--                            </a>--}}
-{{--                        </div>--}}
-{{--                        <select wire:model="customer_id" id="customer_id" class="form-control">--}}
-{{--                            <option value="" selected>Select Customer</option>--}}
-{{--                            @foreach($customers as $customer)--}}
-{{--                                <option value="{{ $customer->id }}">{{ $customer->customer_name }}</option>--}}
-{{--                            @endforeach--}}
-{{--                        </select>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-
-                <div class="table-responsive">
+            <div class="table-responsive">
                     <table class="table">
                         <thead>
                         <tr class="text-center">
@@ -81,52 +63,14 @@
                 </div>
             </div>
 
-{{--            <div class="row">--}}
-{{--                <div class="col-md-12">--}}
-{{--                    <div class="table-responsive">--}}
-{{--                        <table class="table table-borderless">--}}
-{{--                            <tr>--}}
-{{--                                <th>Discount ({{ $global_discount }}%)</th>--}}
-{{--                                <td>{{ format_currency(Cart::instance($cart_instance)->discount()) }}</td>--}}
-{{--                            </tr>--}}
-{{--                            <tr>--}}
-{{--                                <th>Shipping</th>--}}
-{{--                                <input type="hidden" value="{{ $shipping }}" name="shipping_amount">--}}
-{{--                                <td>{{ format_currency($shipping) }}</td>--}}
-{{--                            </tr>--}}
-{{--                            <tr class="text-primary">--}}
-{{--                                <th>Total</th>--}}
-{{--                                @php--}}
-{{--                                    $total_with_shipping = Cart::instance($cart_instance)->total() + (float) $shipping--}}
-{{--                                @endphp--}}
-{{--                                <th>--}}
-{{--                                    {{ format_currency($total_with_shipping) }}--}}
-{{--                                </th>--}}
-{{--                            </tr>--}}
-{{--                        </table>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-            <div class="form-row">
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <label for="discount_percentage">Discount (%)</label>
-                        <input wire:model.lazy="global_discount" type="number" class="form-control" min="0" max="100" value="{{ $global_discount }}" required>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <label for="shipping_amount">Shipping</label>
-                        <input wire:model.lazy="shipping" type="number" class="form-control" min="0" value="0" required step="0.01">
-                    </div>
+            <div class="form-row" style="position: absolute; bottom: 5px">
+                <div class="form-group d-flex justify-content-center flex-wrap mb-0">
+                    <button wire:click="resetCart" type="button" class="btn btn-pill btn-danger mr-3"><i class="bi bi-x"></i> Reset</button>
+                    <button wire:loading.attr="disabled" wire:click="proceed" type="button" class="btn btn-pill btn-primary" {{  $total_amount == 0 ? 'disabled' : '' }}><i class="bi bi-check"></i> Proceed</button>
                 </div>
             </div>
 
-            <div class="form-group d-flex justify-content-center flex-wrap mb-0">
-                <button wire:click="resetCart" type="button" class="btn btn-pill btn-danger mr-3"><i class="bi bi-x"></i> Reset</button>
-                <button wire:loading.attr="disabled" wire:click="proceed" type="button" class="btn btn-pill btn-primary" {{  $total_amount == 0 ? 'disabled' : '' }}><i class="bi bi-check"></i> Proceed</button>
-            </div>
+
         </div>
     </div>
 

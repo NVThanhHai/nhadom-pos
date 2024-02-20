@@ -19,11 +19,11 @@
     <div class="c-wrapper">
         <header class="c-header c-header-light c-header-fixed">
             @include('layouts.header')
+            @can('access_user_management')
             <div class="c-subheader justify-content-between px-3">
-                @can('access_user_management')
                 @yield('breadcrumb')
-                @endcan
             </div>
+            @endcan
         </header>
         <div class="c-body">
             <main class="c-main">

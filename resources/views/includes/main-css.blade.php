@@ -39,4 +39,24 @@
     .select2-container--default .select2-selection--single .select2-selection__arrow b {
         margin-top: 2px;
     }
+    /* For WebKit-based browsers (Chrome, Safari) */
+    /* Hide the scrollbar */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* For Firefox and other browsers */
+    /* Hide the scrollbar */
+    .element {
+        scrollbar-width: none;
+        -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+    }
+
+    /* Optional: If you want to still allow scrolling but hide the scrollbar */
+    .element {
+        overflow: auto;
+        -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+        scrollbar-width: none; /* Hide scrollbar for Firefox and other browsers */
+        /* Add necessary styles for scrolling (e.g., max-height, max-width) */
+    }
 </style>
