@@ -26,7 +26,7 @@
             @endcan
         </header>
         <div class="c-body">
-            <main class="c-main">
+            <main class="c-main" style="padding: 0!important;">
                 @yield('content')
             </main>
         </div>

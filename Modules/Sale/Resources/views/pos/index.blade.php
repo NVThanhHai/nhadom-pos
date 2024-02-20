@@ -23,9 +23,7 @@
             <div class="col-12">
                 @include('utils.alerts')
             </div>
-            <div class="col-lg-1" style="max-height: 70vh!important; overflow: auto; -ms-overflow-style: none;  scrollbar-width: none;">
-            </div>
-            <div class="col-lg-7" style="max-height: 70vh!important; overflow: auto; -ms-overflow-style: none;  scrollbar-width: none;">
+            <div class="col-lg-8" style="-ms-overflow-style: none;  scrollbar-width: none;">
                 <livewire:search-product/>
                 <livewire:pos.product-list :categories="$product_categories"/>
             </div>

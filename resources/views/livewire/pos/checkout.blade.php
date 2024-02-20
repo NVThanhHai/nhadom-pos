@@ -14,14 +14,6 @@
                 @endif
             <div class="table-responsive">
                     <table class="table">
-                        <thead>
-                        <tr class="text-center">
-                            <th class="align-middle">Product</th>
-                            <th class="align-middle">Price</th>
-                            <th class="align-middle">Quantity</th>
-                            <th class="align-middle">Action</th>
-                        </tr>
-                        </thead>
                         <tbody>
                         @if($cart_items->isNotEmpty())
                             @foreach($cart_items as $cart_item)
@@ -53,7 +45,7 @@
                             <tr>
                                 <td colspan="8" class="text-center">
                         <span class="text-danger">
-                            Please search & select products!
+                           Bắt đầu lên đơn với phần sản phẩm đã có bên trái
                         </span>
                                 </td>
                             </tr>
