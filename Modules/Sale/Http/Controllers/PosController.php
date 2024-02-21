@@ -45,15 +45,15 @@ class PosController extends Controller
                 'reference' => 'PSL',
                 'customer_id' => 1,
                 'customer_name' => Customer::findOrFail(1)->customer_name,
-                'tax_percentage' => $request->tax_percentage,
-                'discount_percentage' => $request->discount_percentage,
-                'shipping_amount' => $request->shipping_amount * 100,
+                'tax_percentage' => 0,
+                'discount_percentage' => 0,
+                'shipping_amount' => 0 * 100,
                 'paid_amount' => $request->paid_amount * 100,
                 'total_amount' => $request->total_amount * 100,
                 'due_amount' => $due_amount * 100,
                 'status' => 'Completed',
                 'payment_status' => $payment_status,
-                'payment_method' => $request->payment_method,
+                'payment_method' => 'Cash',
                 'note' => $request->note,
                 'tax_amount' => Cart::instance('sale')->tax() * 100,
                 'discount_amount' => Cart::instance('sale')->discount() * 100,
@@ -88,12 +88,12 @@ class PosController extends Controller
                     'reference' => 'INV/'.$sale->reference,
                     'amount' => $sale->paid_amount,
                     'sale_id' => $sale->id,
-                    'payment_method' => $request->payment_method
+                    'payment_method' => 'Cash'
                 ]);
             }
         });
 
-        toast('POS Sale Created!', 'success');
+        toast('Thành công', 'success');
 
         return redirect()->route('app.pos.index');
     }

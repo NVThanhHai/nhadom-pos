@@ -29,5 +29,6 @@ class Filter extends Component
     public function selectCategory($categoryId)
     {
         $this->emitUp('selectedCategory', $categoryId);
+        $this->dispatchBrowserEvent('categoryNavChanged', $categoryId);
     }
 }

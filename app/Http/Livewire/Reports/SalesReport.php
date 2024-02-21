@@ -46,7 +46,7 @@ class SalesReport extends Component
             ->when($this->payment_status, function ($query) {
                 return $query->where('payment_status', $this->payment_status);
             })
-            ->orderBy('date', 'desc')->paginate(10);
+            ->orderBy('created_at', 'desc')->paginate(10);
 
         return view('livewire.reports.sales-report', [
             'sales' => $sales

@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="checkoutModalLabel">
-                    <i class="bi bi-cart-check text-primary"></i> Confirm Sale
+                    <i class="bi bi-cart-check text-primary"></i> Xác nhận thanh toán
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -22,73 +22,33 @@
                             </div>
                         </div>
                     @endif
-                    <div class="row">
-                        <div class="col-lg-7">
-                            <input type="hidden" value="{{ $customer_id }}" name="customer_id">
-                            <input type="hidden" value="{{ $global_tax }}" name="tax_percentage">
-                            <input type="hidden" value="{{ $global_discount }}" name="discount_percentage">
-                            <input type="hidden" value="{{ $shipping }}" name="shipping_amount">
-                            <div class="form-row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="total_amount">Total Amount <span class="text-danger">*</span></label>
-                                        <input id="total_amount" type="text" class="form-control" name="total_amount" value="{{ $total_amount }}" readonly required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="paid_amount">Received Amount <span class="text-danger">*</span></label>
-                                        <input id="paid_amount" type="text" class="form-control" name="paid_amount" value="{{ $total_amount }}" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="payment_method">Payment Method <span class="text-danger">*</span></label>
-                                <select class="form-control" name="payment_method" id="payment_method" required>
-                                    <option value="Cash">Cash</option>
-                                    <option value="Credit Card">Credit Card</option>
-                                    <option value="Bank Transfer">Bank Transfer</option>
-                                    <option value="Cheque">Cheque</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="note">Note (If Needed)</label>
-                                <textarea name="note" id="note" rows="5" class="form-control"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-lg-5">
+                    <div class="row" style="min-height: 30vh">
+                        <div class="col-lg-12">
                             <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <tr>
-                                        <th>Total Products</th>
-                                        <td>
-                                                <span class="badge badge-success">
-                                                    {{ Cart::instance($cart_instance)->count() }}
-                                                </span>
-                                        </td>
+                                <table class="table">
+                                    <tr >
+                                        <th style="border: 0">Tổng {{ Cart::instance($cart_instance)->count() }} sản phẩm</th>
+                                        <td  class="text-right" style="border: 0">{{ format_currency($total_amount) }}</td>
+                                        <input id="total_amount" type="hidden" class="form-control" name="total_amount" value="{{ $total_amount }}" readonly required>
                                     </tr>
                                     <tr>
-                                        <th>Order Tax ({{ $global_tax }}%)</th>
-                                        <td>(+) {{ format_currency(Cart::instance($cart_instance)->tax()) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Discount ({{ $global_discount }}%)</th>
-                                        <td>(-) {{ format_currency(Cart::instance($cart_instance)->discount()) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Shipping</th>
-                                        <input type="hidden" value="{{ $shipping }}" name="shipping_amount">
-                                        <td>(+) {{ format_currency($shipping) }}</td>
-                                    </tr>
-                                    <tr class="text-primary">
-                                        <th>Grand Total</th>
+                                        <th style="font-weight: 500">Tổng cộng</th>
                                         @php
                                             $total_with_shipping = Cart::instance($cart_instance)->total() + (float) $shipping
                                         @endphp
-                                        <th>
-                                            (=) {{ format_currency($total_with_shipping) }}
-                                        </th>
+                                        <td class="text-right">
+                                           {{ format_currency($total_with_shipping) }}
+                                        </td>
+                                        <input id="total_amount" type="hidden" class="form-control" name="paid_amount" value="{{ $total_amount }}" readonly required>
+                                    </tr>
+                                    <tr>
+                                        <th style="font-weight: 500; border: 0">Khách trả</th>
+                                        @php
+                                            $total_with_shipping = Cart::instance($cart_instance)->total() + (float) $shipping
+                                        @endphp
+                                        <td  class="text-right" style="border: 0">
+                                            {{ format_currency($total_with_shipping) }}
+                                        </td>
                                     </tr>
                                 </table>
                             </div>
@@ -97,10 +57,16 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color: #fff; color: black; min-height: 50px; width: 100px; border: 1px solid #0e873f">Quay lại</button>
+                    <button type="submit" class="btn" style="background-color: #0e873f; color: #fff; min-height: 50px; width: 100px">Xác nhận</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<style>
+    th, td {
+        font-weight: 400;
+    }
+</style>

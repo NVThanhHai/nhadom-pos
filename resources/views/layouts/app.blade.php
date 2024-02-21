@@ -13,25 +13,17 @@
 </head>
 
 <body class="c-app">
-    @can('access_user_management')
-        @include('layouts.sidebar')
-    @endcan
+    @include('layouts.sidebar')
     <div class="c-wrapper">
-        <header class="c-header c-header-light c-header-fixed">
+        <header class="c-header c-header-light c-header-fixed"  style="@if(auth()->user()->name == 'thungan') background-color: #0e873f; @endif">
             @include('layouts.header')
-            @can('access_user_management')
-            <div class="c-subheader justify-content-between px-3">
-                @yield('breadcrumb')
-            </div>
-            @endcan
+
         </header>
         <div class="c-body">
             <main class="c-main" style="padding: 0!important;">
                 @yield('content')
             </main>
         </div>
-
-        @include('layouts.footer')
     </div>
 
     @include('includes.main-js')

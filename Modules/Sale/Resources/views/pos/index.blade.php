@@ -23,10 +23,10 @@
             <div class="col-12">
                 @include('utils.alerts')
             </div>
-            <div class="col-lg-8" style="-ms-overflow-style: none;  scrollbar-width: none;">
+            <div class="col-lg-8" style="-ms-overflow-style: none;  scrollbar-width: none; padding: 0">
                 <livewire:pos.product-list :categories="$product_categories"/>
             </div>
-            <div class="col-lg-4" style="height: 70vh!important; overflow: auto">
+            <div class="col-lg-4" style="overflow: auto">
                 <livewire:pos.checkout :cart-instance="'sale'" :customers="$customers"/>
             </div>
         </div>
@@ -40,29 +40,29 @@
             window.addEventListener('showCheckoutModal', event => {
                 $('#checkoutModal').modal('show');
 
-                $('#paid_amount').maskMoney({
-                    prefix:'{{ settings()->currency->symbol }}',
-                    thousands:'{{ settings()->currency->thousand_separator }}',
-                    decimal:'{{ settings()->currency->decimal_separator }}',
-                    allowZero: false,
-                });
+                {{--$('#paid_amount').maskMoney({--}}
+                {{--    prefix:'{{ settings()->currency->symbol }}',--}}
+                {{--    thousands:'{{ settings()->currency->thousand_separator }}',--}}
+                {{--    decimal:'{{ settings()->currency->decimal_separator }}',--}}
+                {{--    allowZero: false,--}}
+                {{--});--}}
 
-                $('#total_amount').maskMoney({
-                    prefix:'{{ settings()->currency->symbol }}',
-                    thousands:'{{ settings()->currency->thousand_separator }}',
-                    decimal:'{{ settings()->currency->decimal_separator }}',
-                    allowZero: true,
-                });
+                {{--$('#total_amount').maskMoney({--}}
+                {{--    prefix:'{{ settings()->currency->symbol }}',--}}
+                {{--    thousands:'{{ settings()->currency->thousand_separator }}',--}}
+                {{--    decimal:'{{ settings()->currency->decimal_separator }}',--}}
+                {{--    allowZero: true,--}}
+                {{--});--}}
 
-                $('#paid_amount').maskMoney('mask');
-                $('#total_amount').maskMoney('mask');
+                {{--$('#paid_amount').maskMoney('mask');--}}
+                {{--$('#total_amount').maskMoney('mask');--}}
 
-                $('#checkout-form').submit(function () {
-                    var paid_amount = $('#paid_amount').maskMoney('unmasked')[0];
-                    $('#paid_amount').val(paid_amount);
-                    var total_amount = $('#total_amount').maskMoney('unmasked')[0];
-                    $('#total_amount').val(total_amount);
-                });
+                {{--$('#checkout-form').submit(function () {--}}
+                {{--    var paid_amount = $('#paid_amount').maskMoney('unmasked')[0];--}}
+                {{--    $('#paid_amount').val(paid_amount);--}}
+                {{--    var total_amount = $('#total_amount').maskMoney('unmasked')[0];--}}
+                {{--    $('#total_amount').val(total_amount);--}}
+                {{--});--}}
             });
         });
     </script>
