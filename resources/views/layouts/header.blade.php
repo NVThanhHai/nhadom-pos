@@ -19,7 +19,7 @@
     @endcan
     @can('access_sales')
         <li class="c-header-nav-item mr-3">
-            <a style="background-color: #0e873f; color: #fff" class="btn btn-pill {{ request()->routeIs('sales-report.index') ? 'c-active' : '' }}" href="{{ route('sales-report.index') }}">
+            <a style="background-color: #0e873f; color: #fff" class="btn btn-pill {{ request()->routeIs('sales.index') ? 'c-active' : '' }}" href="{{ route('sales.index') }}">
                Doanh thu
             </a>
         </li>

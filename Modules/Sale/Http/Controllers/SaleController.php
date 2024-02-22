@@ -48,11 +48,11 @@ class SaleController extends Controller
 
             $sale = Sale::create([
                 'date' => $request->date,
-                //'customer_id' => $request->customer_id,
-                'customer_name' => Customer::findOrFail($request->customer_id)->customer_name,
-                'tax_percentage' => $request->tax_percentage,
-                'discount_percentage' => $request->discount_percentage,
-                'shipping_amount' => $request->shipping_amount * 100,
+                'customer_id' => 1,
+                'customer_name' => Customer::findOrFail(1)->customer_name,
+                'tax_percentage' => 0,
+                'discount_percentage' => 0,
+                'shipping_amount' => 0 * 100,
                 'paid_amount' => $request->paid_amount * 100,
                 'total_amount' => $request->total_amount * 100,
                 'due_amount' => $due_amount * 100,
@@ -107,7 +107,7 @@ class SaleController extends Controller
 
 
     public function show(Sale $sale) {
-        abort_if(Gate::denies('show_sales'), 403);
+        abort_if(Gate::denies('access_sales'), 403);
 
         $customer = Customer::findOrFail($sale->customer_id);
 

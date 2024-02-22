@@ -2,6 +2,7 @@
 
 namespace Modules\Sale\DataTables;
 
+use Carbon\Carbon;
 use Modules\Sale\Entities\Sale;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -24,19 +25,21 @@ class SalesDataTable extends DataTable
             ->addColumn('due_amount', function ($data) {
                 return format_currency($data->due_amount);
             })
-            ->addColumn('status', function ($data) {
-                return view('sale::partials.status', compact('data'));
-            })
             ->addColumn('payment_status', function ($data) {
                 return view('sale::partials.payment-status', compact('data'));
             })
-            ->addColumn('action', function ($data) {
+            ->addColumn('date', function ($data) {
+                return Carbon::parse($data->created_at)->format('d/m/Y H:i:s');
+            })
+            ->addColumn('detail', function ($data) {
                 return view('sale::partials.actions', compact('data'));
-            });
+            })
+            ->removeColumn('customer_name')
+            ->removeColumn('reference');
     }
 
     public function query(Sale $model) {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy('created_at', 'desc');
     }
 
     public function html() {
@@ -44,34 +47,11 @@ class SalesDataTable extends DataTable
             ->setTableId('sales-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->dom("<'row'<'col-md-3'l><'col-md-5 mb-2'B><'col-md-4'f>> .
-                                'tr' .
-                                <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
-            ->orderBy(8)
-            ->buttons(
-                Button::make('excel')
-                    ->text('<i class="bi bi-file-earmark-excel-fill"></i> Excel'),
-                Button::make('print')
-                    ->text('<i class="bi bi-printer-fill"></i> Print'),
-                Button::make('reset')
-                    ->text('<i class="bi bi-x-circle"></i> Reset'),
-                Button::make('reload')
-                    ->text('<i class="bi bi-arrow-repeat"></i> Reload')
-            );
+            ->orderBy(1);
     }
 
     protected function getColumns() {
         return [
-            Column::make('reference')
-                ->className('text-center align-middle'),
-
-            Column::make('customer_name')
-                ->title('Customer')
-                ->className('text-center align-middle'),
-
-            Column::computed('status')
-                ->className('text-center align-middle'),
-
             Column::computed('total_amount')
                 ->className('text-center align-middle'),
 
@@ -83,8 +63,9 @@ class SalesDataTable extends DataTable
 
             Column::computed('payment_status')
                 ->className('text-center align-middle'),
-
-            Column::computed('action')
+            Column::computed('date')
+                ->className('text-center align-middle'),
+            Column::computed('detail')
                 ->exportable(false)
                 ->printable(false)
                 ->className('text-center align-middle'),
