@@ -22,8 +22,8 @@ class SalesDataTable extends DataTable
             ->addColumn('paid_amount', function ($data) {
                 return format_currency($data->paid_amount);
             })
-            ->addColumn('due_amount', function ($data) {
-                return format_currency($data->due_amount);
+            ->addColumn('payment_method', function ($data) {
+                return $data->payment_method === 'Bank Transfer' ? 'Chuyển khoản' : 'Tiền mặt' ;
             })
             ->addColumn('payment_status', function ($data) {
                 return view('sale::partials.payment-status', compact('data'));
@@ -58,7 +58,7 @@ class SalesDataTable extends DataTable
             Column::computed('paid_amount')
                 ->className('text-center align-middle'),
 
-            Column::computed('due_amount')
+            Column::computed('payment_method')
                 ->className('text-center align-middle'),
 
             Column::computed('payment_status')

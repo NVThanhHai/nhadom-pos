@@ -4,7 +4,9 @@ namespace App\Http\Livewire\Pos;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use Modules\Product\Entities\Category;
 use Modules\Product\Entities\Product;
+use Modules\Product\Http\Controllers\CategoriesController;
 
 class ProductList extends Component
 {
@@ -27,10 +29,15 @@ class ProductList extends Component
     }
 
     public function render() {
+        $products = Product::all();
+        foreach ($products as $product) {
+            $product->image = $product->getFirstMediaUrl('images');
+        }
+
         return view('livewire.pos.product-list', [
-            'products' => Product::when($this->category_id, function ($query) {
-                return $query->where('category_id', $this->category_id);
-            })->get()
+
+            'products' =>$products,
+            'categories' => Category::all()
 //            ->paginate($this->limit)
         ]);
     }

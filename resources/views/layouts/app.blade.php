@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>@yield('title') || {{ config('app.name') }}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta content="Fahim Anzam Dip" name="author">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
@@ -13,7 +14,9 @@
 </head>
 
 <body class="c-app">
-    @include('layouts.sidebar')
+    @can('access_user_management')
+        @include('layouts.sidebar')
+    @endcan
     <div class="c-wrapper">
         <header class="c-header c-header-light c-header-fixed"  style="@if(auth()->user()->name == 'thungan') background-color: #0e873f; @endif">
             @include('layouts.header')

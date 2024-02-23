@@ -1,3 +1,4 @@
+<!--
 <div>
     <div class="card border-0 shadow-sm" style="height: 75vh!important;" >
         <div class="card-body" style="padding: 0">
@@ -70,8 +71,8 @@
         </div>
     </div>
 
-    {{--Checkout Modal--}}
     @include('livewire.pos.includes.checkout-modal')
 
 </div>
 
+-->

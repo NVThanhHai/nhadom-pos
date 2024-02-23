@@ -23,12 +23,12 @@
             <div class="col-12">
                 @include('utils.alerts')
             </div>
-            <div class="col-lg-8" style="-ms-overflow-style: none;  scrollbar-width: none; padding: 0">
+            <div class="col-lg-12" style="-ms-overflow-style: none;  scrollbar-width: none; padding: 0">
                 <livewire:pos.product-list :categories="$product_categories"/>
             </div>
-            <div class="col-lg-4" style="overflow: auto">
-                <livewire:pos.checkout :cart-instance="'sale'" :customers="$customers"/>
-            </div>
+{{--            <div class="col-lg-4" style="overflow: auto">--}}
+{{--                <livewire:pos.checkout :cart-instance="'sale'" :customers="$customers"/>--}}
+{{--            </div>--}}
         </div>
     </div>
 @endsection

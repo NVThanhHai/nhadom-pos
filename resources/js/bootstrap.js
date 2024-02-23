@@ -7,6 +7,7 @@ import * as bootstrap from 'bootstrap';
  * code may be modified to fit the specific needs of your application.
  */
 
+
 try {
     window.Popper = Popper;
 } catch (e) {

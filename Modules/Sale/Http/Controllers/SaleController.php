@@ -2,6 +2,7 @@
 
 namespace Modules\Sale\Http\Controllers;
 
+use Carbon\Carbon;
 use Modules\Sale\DataTables\SalesDataTable;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Routing\Controller;
@@ -14,7 +15,7 @@ use Modules\Sale\Entities\SaleDetails;
 use Modules\Sale\Entities\SalePayment;
 use Modules\Sale\Http\Requests\StoreSaleRequest;
 use Modules\Sale\Http\Requests\UpdateSaleRequest;
-
+use Illuminate\Http\Request;
 class SaleController extends Controller
 {
 
@@ -229,5 +230,62 @@ class SaleController extends Controller
         toast('Sale Deleted!', 'warning');
 
         return redirect()->route('sales.index');
+    }
+
+    public function storeSale(Request $request)
+    {
+        DB::transaction(function () use ($request) {
+            $payment_status = 'Paid';
+            $data_request = $request->json()->all()[0];
+            if ($data_request != null) {
+                $sale = Sale::create([
+                    'date' => Carbon::now(),
+                    'customer_id' => 1,
+                    'customer_name' => Customer::findOrFail(1)->customer_name,
+                    'tax_percentage' => 0,
+                    'discount_percentage' => 0,
+                    'shipping_amount' => 0 * 100,
+                    'paid_amount' => $data_request['paid_amount'] * 100,
+                    'total_amount' => $data_request['total_amount'] * 100,
+                    'due_amount' => 0 * 100,
+                    'payment_status' => $payment_status,
+                    'payment_method' => $data_request['payment_method'],
+                    'tax_amount' => 0,
+                    'status' => 'Completed',
+                    'discount_amount' => 0
+                ]);
+
+                foreach ($data_request['shopItems'] as $cart_item) {
+                    SaleDetails::create([
+                        'sale_id' => $sale->id,
+                        'product_id' => $cart_item['id'],
+                        'product_name' => $cart_item['product_name'],
+                        'product_code' => $cart_item['product_name'],
+                        'quantity' => $cart_item['quantity'],
+                        'price' => $cart_item['product_price'] * 100,
+                        'unit_price' => 0 * 100,
+                        'sub_total' => $cart_item['product_price'] * 100,
+                        'product_discount_amount' => 0 * 100,
+                        'product_discount_type' => 'fixed',
+                        'product_tax_amount' => 0 * 100,
+                    ]);
+                }
+
+                if ($sale->paid_amount > 0) {
+                    SalePayment::create([
+                        'date' => Carbon::now(),
+                        'reference' => 'INV/'.$sale->reference,
+                        'amount' => $sale->paid_amount,
+                        'sale_id' => $sale->id,
+                        'payment_method' => 'Cash'
+                    ]);
+                }
+            }
+
+        });
+
+        toast('Sale Created!', 'success');
+
+        return response()->json(['success'=> 'Sale Created!']);
     }
 }
