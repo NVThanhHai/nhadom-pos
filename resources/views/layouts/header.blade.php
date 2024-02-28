@@ -19,8 +19,15 @@
     @endcan
     @can('access_sales')
         <li class="c-header-nav-item mr-3">
-            <a style="background-color: #0e873f; color: #fff" class="btn btn-pill {{ request()->routeIs('sales.index') ? 'c-active' : '' }}" href="{{ route('sales.index') }}">
-               Doanh thu
+            <a style="background-color: #0e873f; color: #fff" class="btn btn-pill {{ request()->routeIs('home') ? 'd-none' : '' }}" href="{{ route('home') }}">
+              Tổng quan
+            </a>
+        </li>
+    @endcan
+    @can('access_sales')
+        <li class="c-header-nav-item mr-3">
+            <a style="background-color: #0e873f; color: #fff" class="btn btn-pill {{ request()->routeIs('sales.index') ? 'd-none' : '' }}" href="{{ route('sales.index') }}">
+                Báo cáo
             </a>
         </li>
     @endcan

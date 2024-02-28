@@ -16,10 +16,14 @@
     ::-webkit-scrollbar {
         display: none;
     }
+    .c-header {
+        height: 56px!important;
+    }
+
 </style>
 @section('content')
-    <div class="container-fluid" style="padding: 0; height: 70vh!important;">
-        <div class="row">
+    <div class="container-fluid" style="padding: 0; margin: 0!important; position: fixed; top:56px; bottom: 0">
+        <div class="row" style="height: 100%!important; margin: 0!important;">
             <div class="col-12">
                 @include('utils.alerts')
             </div>

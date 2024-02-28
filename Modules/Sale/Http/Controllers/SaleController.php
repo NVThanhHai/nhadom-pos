@@ -239,7 +239,7 @@ class SaleController extends Controller
             $data_request = $request->json()->all()[0];
             if ($data_request != null) {
                 $sale = Sale::create([
-                    'date' => Carbon::now(),
+                    'date' => Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s'),
                     'customer_id' => 1,
                     'customer_name' => Customer::findOrFail(1)->customer_name,
                     'tax_percentage' => 0,
@@ -273,7 +273,7 @@ class SaleController extends Controller
 
                 if ($sale->paid_amount > 0) {
                     SalePayment::create([
-                        'date' => Carbon::now(),
+                        'date' => Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s'),
                         'reference' => 'INV/'.$sale->reference,
                         'amount' => $sale->paid_amount,
                         'sale_id' => $sale->id,
