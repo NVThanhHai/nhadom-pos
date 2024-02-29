@@ -150,9 +150,7 @@ class SaleController extends Controller
 
     public function update(UpdateSaleRequest $request, Sale $sale) {
         DB::transaction(function () use ($request, $sale) {
-
             $due_amount = $request->total_amount - $request->paid_amount;
-
             if ($due_amount == $request->total_amount) {
                 $payment_status = 'Unpaid';
             } elseif ($due_amount > 0) {
@@ -174,20 +172,20 @@ class SaleController extends Controller
             $sale->update([
                 'date' => $request->date,
                 'reference' => $request->reference,
-                //'customer_id' => $request->customer_id,
-                //'customer_name' => Customer::findOrFail($request->customer_id)->customer_name,
-                'tax_percentage' => $request->tax_percentage,
-                'discount_percentage' => $request->discount_percentage,
-                'shipping_amount' => $request->shipping_amount * 100,
+                'customer_id' => 1,
+                'customer_name' => Customer::findOrFail(1)->customer_name,
+                'tax_percentage' => 0,
+                'discount_percentage' => 0,
+                'shipping_amount' => 0 * 100,
                 'paid_amount' => $request->paid_amount * 100,
                 'total_amount' => $request->total_amount * 100,
-                'due_amount' => $due_amount * 100,
+                'due_amount' => 0 * 100,
                 'status' => $request->status,
                 'payment_status' => $payment_status,
                 'payment_method' => $request->payment_method,
                 'note' => $request->note,
-                'tax_amount' => Cart::instance('sale')->tax() * 100,
-                'discount_amount' => Cart::instance('sale')->discount() * 100,
+                'tax_amount' => 0 * 100,
+                'discount_amount' => 0* 100,
             ]);
 
             foreach (Cart::instance('sale')->content() as $cart_item) {
@@ -203,6 +201,8 @@ class SaleController extends Controller
                     'product_discount_amount' => $cart_item->options->product_discount * 100,
                     'product_discount_type' => $cart_item->options->product_discount_type,
                     'product_tax_amount' => $cart_item->options->product_tax * 100,
+                    'created_at' => $sale->created_at,
+                    'updated_at' => $sale->updated_at,
                 ]);
 
                 if ($request->status == 'Shipped' || $request->status == 'Completed') {
@@ -252,7 +252,9 @@ class SaleController extends Controller
                     'payment_method' => $data_request['payment_method'],
                     'tax_amount' => 0,
                     'status' => 'Completed',
-                    'discount_amount' => 0
+                    'discount_amount' => 0,
+                     'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s'),
+                     'updated_at' => Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s'),
                 ]);
 
                 foreach ($data_request['shopItems'] as $cart_item) {
@@ -268,6 +270,8 @@ class SaleController extends Controller
                         'product_discount_amount' => 0 * 100,
                         'product_discount_type' => 'fixed',
                         'product_tax_amount' => 0 * 100,
+                        'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s'),
+                        'updated_at' => Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s'),
                     ]);
                 }
 
@@ -277,7 +281,9 @@ class SaleController extends Controller
                         'reference' => 'INV/'.$sale->reference,
                         'amount' => $sale->paid_amount,
                         'sale_id' => $sale->id,
-                        'payment_method' => 'Cash'
+                        'payment_method' => 'Cash',
+                        'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s'),
+                        'updated_at' => Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s'),
                     ]);
                 }
             }

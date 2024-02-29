@@ -36,18 +36,6 @@
                                 <div class="col-lg-4">
                                     <div class="from-group">
                                         <div class="form-group">
-                                            <label for="customer_id">Customer <span class="text-danger">*</span></label>
-                                            <select class="form-control" name="customer_id" id="customer_id" required>
-                                                @foreach(\Modules\People\Entities\Customer::all() as $customer)
-                                                    <option {{ $sale->customer_id == $customer->id ? 'selected' : '' }} value="{{ $customer->id }}">{{ $customer->customer_name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="from-group">
-                                        <div class="form-group">
                                             <label for="date">Date <span class="text-danger">*</span></label>
                                             <input type="date" class="form-control" name="date" required value="{{ $sale->date }}">
                                         </div>
@@ -58,7 +46,7 @@
                             <livewire:product-cart :cartInstance="'sale'" :data="$sale"/>
 
                             <div class="form-row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-4 d-none">
                                     <div class="form-group">
                                         <label for="status">Status <span class="text-danger">*</span></label>
                                         <select class="form-control" name="status" id="status" required>
@@ -71,15 +59,18 @@
                                 <div class="col-lg-4">
                                     <div class="from-group">
                                         <div class="form-group">
-                                            <label for="payment_method">Payment Method <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="payment_method" required value="{{ $sale->payment_method }}" readonly>
+                                            <label for="payment_method">Phương thức thanh toán<span class="text-danger">*</span></label>
+                                            <select class="form-control" name="payment_method" id="payment_method" required>
+                                                <option {{ $sale->payment_method == 'Cash' ? 'selected' : '' }} value="Cash">Tiền mặt</option>
+                                                <option {{ $sale->payment_method == 'Bank Transfer' ? 'selected' : '' }} value="Bank Transfer">Chuyển khoản</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label for="paid_amount">Amount Received <span class="text-danger">*</span></label>
-                                        <input id="paid_amount" type="text" class="form-control" name="paid_amount" required value="{{ $sale->paid_amount }}" readonly>
+                                        <label for="paid_amount">Số tiền đã thanh toán<span class="text-danger">*</span></label>
+                                        <input id="paid_amount" type="text" class="form-control" name="paid_amount" required value="{{ $sale->paid_amount }}"  @cannot('access_user_management') readonly @endcannot>
                                     </div>
                                 </div>
                             </div>
@@ -106,19 +97,19 @@
     <script src="{{ asset('js/jquery-mask-money.js') }}"></script>
     <script>
         $(document).ready(function () {
-            $('#paid_amount').maskMoney({
-                prefix:'{{ settings()->currency->symbol }}',
-                thousands:'{{ settings()->currency->thousand_separator }}',
-                decimal:'{{ settings()->currency->decimal_separator }}',
-                allowZero: true,
-            });
+            {{--$('#paid_amount').maskMoney({--}}
+            {{--    prefix:'{{ settings()->currency->symbol }}',--}}
+            {{--    thousands:'{{ settings()->currency->thousand_separator }}',--}}
+            {{--    decimal:'{{ settings()->currency->decimal_separator }}',--}}
+            {{--    allowZero: true,--}}
+            {{--});--}}
 
-            $('#paid_amount').maskMoney('mask');
+            {{--$('#paid_amount').maskMoney('mask');--}}
 
-            $('#sale-form').submit(function () {
-                var paid_amount = $('#paid_amount').maskMoney('unmasked')[0];
-                $('#paid_amount').val(paid_amount);
-            });
+            {{--$('#sale-form').submit(function () {--}}
+            {{--    var paid_amount = $('#paid_amount').maskMoney('unmasked')[0];--}}
+            {{--    $('#paid_amount').val(paid_amount);--}}
+            {{--});--}}
         });
     </script>
 @endpush

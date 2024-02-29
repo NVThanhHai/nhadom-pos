@@ -7,7 +7,6 @@ $(document).ready(function () {
             chart.data.datasets.forEach(function (dataset, i) {
                 var meta = chart.getDatasetMeta(i);
                 if (!meta.hidden) {
-                    console.log( dataset)
                     meta.data.forEach(function (element, index) {
                         if (dataset.data[index] <= 0) return;
                         // Draw the text in black, with the specified font
@@ -44,17 +43,35 @@ $(document).ready(function () {
         for (var i = 1; i<=end;i++){
             label.push(i);
         }
+
         var datas = [];
         var lables = [];
-        response.sales.original.days.forEach(function (item, idx) {
-            var date = new Date(item).getDate();
-            datas[date] = response.sales.original.data[idx];
-        })
-        //console.log(datasets)
+        var datas_custom = [];
+        response.sales.original.data.forEach(function (item, idx) {
+
+            var date = new Date(item.date).getDate();
+            if (!datas[date]) {
+                datas[date] = parseInt(response.sales.original.data[idx].count) / 100;
+            } else {
+                datas[date] += parseInt(response.sales.original.data[idx].count) / 100;
+            }
+            if (!datas_custom[date]) {
+                datas_custom[date] = {};
+            }
+            datas_custom[date][item.payment_method] = parseInt(item.count) / 100;
+        });
+
+        console.log(datas_custom)
         $.each(label, function (i, item) {
             lables[i] = i+1
             datas[i] = datas[i+1] || 0;
+            datas_custom[i] = datas_custom[i+1] || {
+                "Bank Transfer": 0,
+                "Cash": 0
+            };
         })
+        console.log(datas)
+
         let salesPurchasesChart = new Chart(salesPurchasesBar, {
             type: 'bar',
             data: {
@@ -62,6 +79,7 @@ $(document).ready(function () {
                 datasets: [{
                     label: 'Doanh thu',
                     data: datas,
+                    customData: datas_custom,
                     backgroundColor: [
                         '#6366F1',
                     ],
@@ -100,13 +118,27 @@ $(document).ready(function () {
                         stacked: true
                     }
                 }
-            }
+                ,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                var data = context.dataset.customData[context.dataIndex];
+                                var datatotal = context.dataset.data[context.dataIndex];
+                                return `Tổng: ${formatPrice(datatotal)} | Tiền mặt: ${formatPrice(data["Cash"])} | Chuyển khoản: ${formatPrice(data["Bank Transfer"])}`;
+                            }
+                        }
+                    }
+                }
+            },
+
         });
     });
 
     let overviewChart = document.getElementById('currentDailyChart');
     let overviewChartMonth = document.getElementById('currentMonthChart');
     $.get('/current-month/chart-data', function (response) {
+        console.log(response)
         let currentDailyChart = new Chart(overviewChart, {
             type: 'doughnut',
             data: {

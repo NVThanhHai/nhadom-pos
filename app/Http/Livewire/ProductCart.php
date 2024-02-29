@@ -142,6 +142,56 @@ class ProductCart extends Component
         ]);
     }
 
+    public function increment($row_id, $product_id) {
+        $cart = Cart::instance($this->cart_instance)->content()->where('rowId',$row_id);
+        if($cart->isEmpty()){
+            return;
+        }
+
+        $this->quantity[$product_id] = $this->quantity[$product_id] + 1;
+        Cart::instance($this->cart_instance)->update($row_id, $this->quantity[$product_id]);
+
+        $cart_item = Cart::instance($this->cart_instance)->get($row_id);
+
+        Cart::instance($this->cart_instance)->update($row_id, [
+            'options' => [
+                'sub_total'             => $cart_item->price * $cart_item->qty,
+                'code'                  => $cart_item->options->code,
+                'stock'                 => $cart_item->options->stock,
+                'unit'                  => $cart_item->options->unit,
+                'product_tax'           => $cart_item->options->product_tax,
+                'unit_price'            => $cart_item->options->unit_price,
+                'product_discount'      => $cart_item->options->product_discount,
+                'product_discount_type' => $cart_item->options->product_discount_type,
+            ]
+        ]);
+    }
+
+    public function decrement($row_id, $product_id) {
+        $cart = Cart::instance($this->cart_instance)->content()->where('rowId',$row_id);
+        if($cart->isEmpty()){
+            return;
+        }
+
+        $this->quantity[$product_id] = max($this->quantity[$product_id] - 1, 1);
+
+        Cart::instance($this->cart_instance)->update($row_id, $this->quantity[$product_id]);
+
+        $cart_item = Cart::instance($this->cart_instance)->get($row_id);
+        Cart::instance($this->cart_instance)->update($row_id, [
+            'options' => [
+                'sub_total' => $cart_item->price * $cart_item->qty,
+                'code' => $cart_item->options->code,
+                'stock' => $cart_item->options->stock,
+                'unit' => $cart_item->options->unit,
+                'product_tax' => $cart_item->options->product_tax,
+                'unit_price' => $cart_item->options->unit_price,
+                'product_discount' => $cart_item->options->product_discount,
+                'product_discount_type' => $cart_item->options->product_discount_type,
+            ]
+        ]);
+    }
+
     public function updatedDiscountType($value, $name) {
         $this->item_discount[$name] = 0;
     }

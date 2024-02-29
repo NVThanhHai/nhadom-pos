@@ -98,8 +98,9 @@
                                         <span style="font-size: 0.85rem; font-weight: 600">{{formatPrice(product.product_price)}}</span>
                                     </div>
                                     <div class="position-relative">
+                                        <!-- :src="`${product.image}`"-->
                                         <img style="height: 80px; width: 100%;object-fit: cover; "
-                                             src="https://nhadom.id.vn/storage/46/1708257684.jpg"
+                                             :src="`${product.image}`"
                                              class="card-img-top" alt="Product Image">
                                     </div>
                                     <div class="card-body" style="width: 100%; padding: 0; text-align: center; height: 60px">
@@ -184,7 +185,7 @@
                                     <div class="form-row" style="margin-right: 50px!important">
                                         <div class="form-group d-flex justify-content-end flex-wrap mb-0"
                                              style="width: 100%; margin: 0px 0px 5px 0px!important; align-items: center;">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color: #fff; color: black; height: 60px; width: 130px; border: 1px solid #0e873f; margin: 1px 5px!important;" v-on:click="requestDevice">Chụp ảnh hóa đơn</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color: #fff; color: black; height: 60px; width: 130px; border: 1px solid #0e873f; margin: 1px 5px!important;" v-on:click="captureAndSave">Chụp ảnh hóa đơn</button>
                                             <button
                                                 style="background-color: #0e873f; color: #fff; height: 60px; font-size: 1.1rem; margin: 1px 5px!important; width: 130px"
                                                 type="button" class="btn btn-pill ml-4" v-on:click="showCheckout">Thanh toán<br>{{ formatPrice(totalPrice) }}
@@ -250,6 +251,12 @@ export default {
     mounted() {
        // console.log(this.products)
         // Do something useful with the data in the template
+        var shopItemsInStorage = localStorage.getItem('shopItems')
+        if (shopItemsInStorage) {
+            var parsedShopItems = JSON.parse(shopItemsInStorage);
+            console.log(parsedShopItems)
+            this.shopItems = parsedShopItems;
+        }
 
     },
     data() {
@@ -279,6 +286,7 @@ export default {
                 acceptAllDevices: true,
                 optionalServices: [ UART_SERVICE_ID ] // TODO
             });
+
             console.log("Device connected");
         },
 
@@ -294,6 +302,8 @@ export default {
             $.each(this.shopItems, function (index, item) {
                 quantity += quantity + item.quantity > 1 ? item.quantity : 1;
             });
+            localStorage.removeItem('shopItems');
+            localStorage.setItem('shopItems', JSON.stringify(this.shopItems));
             return quantity;
         },
         formattedPaid: {
@@ -328,6 +338,9 @@ export default {
             if (index > -1) {
                 this.shopItems.splice(index, 1);
             }
+            if (this.shopItems.length <= 0) {
+                localStorage.removeItem('shopItems');
+            }
         },
         addProductToShop(product) {
             var existProduct = this.shopItems.find(item => item.id == product.id);
@@ -350,7 +363,9 @@ export default {
 
         decreaseItem(item) {
             item.quantity--;
-            if (item.quantity === 0) this.shopItems.splice(this.shopItems.indexOf(item), 1);
+            if (item.quantity === 0) {
+                this.removeItem(item);
+            };
         },
 
         async saleStore(){
@@ -374,7 +389,7 @@ export default {
                 dataType: "json",
                 data: JSON.stringify(data),
                 success: function (data) {
-                    console.log(data)
+                    localStorage.clear();
                     location.reload()
                 },
                 error: function (jqXHR, textStatus, errorThrown) {

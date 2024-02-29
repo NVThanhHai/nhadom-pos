@@ -25,11 +25,11 @@ class SalesDataTable extends DataTable
             ->addColumn('payment_method', function ($data) {
                 return $data->payment_method === 'Bank Transfer' ? 'Chuyển khoản' : 'Tiền mặt' ;
             })
-            ->addColumn('payment_status', function ($data) {
-                return view('sale::partials.payment-status', compact('data'));
-            })
+//            ->addColumn('payment_status', function ($data) {
+//                return view('sale::partials.payment-status', compact('data'));
+//            })
             ->addColumn('date', function ($data) {
-                return Carbon::parse($data->created_at)->format('d/m/Y H:i:s');
+                return $data->created_at;
             })
             ->addColumn('detail', function ($data) {
                 return view('sale::partials.actions', compact('data'));
@@ -48,6 +48,7 @@ class SalesDataTable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->orderBy(1);
+
     }
 
     protected function getColumns() {
@@ -61,8 +62,8 @@ class SalesDataTable extends DataTable
             Column::computed('payment_method')
                 ->className('text-center align-middle'),
 
-            Column::computed('payment_status')
-                ->className('text-center align-middle'),
+//            Column::computed('payment_status')
+//                ->className('text-center align-middle'),
             Column::computed('date')
                 ->className('text-center align-middle'),
             Column::computed('detail')

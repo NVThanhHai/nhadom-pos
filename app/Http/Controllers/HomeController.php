@@ -34,7 +34,7 @@ class HomeController extends Controller
         $revenue = ($sales - $sale_returns) / 100;
         $profit = $revenue - $product_costs;
 
-        $sales_today = Sale::where('status', 'Completed')->whereDate('date', Carbon::now()->format('Y-m-d'))->get();
+        $sales_today = Sale::where('status', 'Completed')->whereDate('date', Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d'))->get();
         $revenue_today = $sales_today->sum('total_amount') ;
         $revenue_today_cash = $sales_today->filter(function ($sale) {
             return $sale->payment_method == 'Cash';
@@ -106,7 +106,7 @@ class HomeController extends Controller
 //            'purchases' => $currentMonthPurchases,
 //            'expenses'  => $currentMonthExpenses
 //        ]);
-        $today = Sale::where('status', 'Completed')->whereDate('date', Carbon::now()->format('Y-m-d'))->get();
+        $today = Sale::where('status', 'Completed')->whereDate('date', Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d'))->get();
         $morning =  $today->where('created_at',">=", Carbon::now('Asia/Ho_Chi_Minh')->startOfDay()->format('Y-m-d H:i:s'))
                                 ->where('created_at',"<", Carbon::createFromTime(12, 0, 0, 'Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s'))
                                 ->sum('total_amount');
@@ -230,29 +230,15 @@ class HomeController extends Controller
     }
 
     public function salesChartData() {
-        $dates = collect();
-
-        $sales = Sale::where('status', 'Completed')
-            ->whereMonth('date', date('m'))
-            ->whereYear('date', date('Y'))
-            ->groupBy('date')
-            ->orderBy('date')
-            ->get([
-                DB::raw("date"),
-                DB::raw('SUM(total_amount) AS count'),
-            ])
-            ->pluck('count', 'date');
-
-        $dates = $dates->merge($sales);
+        $query = collect(DB::select('WITH sales_temp AS (SELECT * FROM sales where month(date) = 02 and year(date) = 2024)
+        select date, SUM(total_amount) AS count, payment_method from sales_temp group by date, payment_method order by date asc;'));
 
         $data = [];
-        $days = [];
-        foreach ($dates as $key => $value) {
-            $data[] = $value / 100;
-            $days[] = $key;
+        foreach ($query as $item) {
+            array_push($data, $item);
         }
 
-        return response()->json(['data' => $data, 'days' => $days]);
+        return response()->json(['data' => $data]);
     }
 
 
